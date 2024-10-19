@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useShipmentDetailModal } from "../hooks/use-shipment-detail-modal";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -30,7 +29,6 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
   });
 
-  const { onOpen } = useShipmentDetailModal();
   return (
     <div className="">
       <Table>
@@ -59,7 +57,7 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className="cursor-pointer"
-                onClick={() => onOpen((row.original as Shipment).id)}
+                onClick={() => {}}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="h-12 text-sm ">

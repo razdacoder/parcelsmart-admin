@@ -1,3 +1,4 @@
+import AuthRoute from "@/components/auth-route";
 import AuthLayout from "@/pages/auth/AuthLayout";
 import SignIn from "@/pages/auth/SignIn";
 import DashboardLayout from "@/pages/dashboard/DashboardLayout";
@@ -53,8 +54,11 @@ export const router = createBrowserRouter([
   },
   {
     path: "auth/",
-
-    element: <AuthLayout />,
+    element: (
+      <AuthRoute>
+        <AuthLayout />
+      </AuthRoute>
+    ),
     children: [
       {
         path: "login/",
