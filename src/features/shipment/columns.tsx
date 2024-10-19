@@ -1,13 +1,44 @@
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { copyText, formatNaira } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { ArrowUpRight, Copy, Minus } from "lucide-react";
+import { ArrowUpRight, Copy, ListFilter, Minus } from "lucide-react";
 
 export const columns: ColumnDef<Shipment>[] = [
   {
+    accessorKey: "origin_address",
+    header: () => {
+      return (
+        <span className="flex items-center gap-2 text-black">
+          Customer <ListFilter className="size-3.5" />{" "}
+        </span>
+      );
+    },
+    cell: ({ row }) => {
+      return (
+        <span>
+          {row.original.origin_address.first_name}{" "}
+          {row.original.origin_address.last_name}
+        </span>
+      );
+    },
+  },
+  {
     accessorKey: "date",
-    header: "Date",
+    header: () => {
+      return (
+        <span className="flex items-center gap-2 text-black">
+          Date <ListFilter className="size-3.5" />{" "}
+        </span>
+      );
+    },
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2 w-56">
@@ -18,45 +49,28 @@ export const columns: ColumnDef<Shipment>[] = [
     },
   },
   {
-    accessorKey: "reciever",
-    header: "Reciever",
-    cell: ({ row }) => {
+    accessorKey: "rate",
+    header: () => {
       return (
-        <span className="inline-block w-36">
-          {row.original.destination_address.first_name}{" "}
-          {row.original.destination_address.last_name}
+        <span className="flex items-center gap-2 text-black">
+          Order Type <ListFilter className="size-3.5" />{" "}
         </span>
       );
     },
-  },
-  {
-    accessorKey: "destination",
-    header: "Destination",
-    cell: ({ row }) => {
-      return (
-        <>
-          {row.original.rate ? (
-            <span className="inline-block w-36 truncate">
-              {row.original.rate.destination_address.line_1}{" "}
-              {row.original.rate.destination_address.city}{" "}
-              {row.original.rate.destination_address.state},{" "}
-              {row.original.rate.destination_address.country}
-            </span>
-          ) : (
-            <span className="inline-block w-36 truncate">
-              {row.original.destination_address.line_1}{" "}
-              {row.original.destination_address.city}{" "}
-              {row.original.destination_address.state},{" "}
-              {row.original.destination_address.country}
-            </span>
-          )}
-        </>
-      );
+    cell: () => {
+      return <span>Pick Up</span>;
     },
   },
+
   {
     accessorKey: "shipmentId",
-    header: "Shipment ID",
+    header: () => {
+      return (
+        <span className="flex items-center gap-2 text-black">
+          Shipment ID <ListFilter className="size-3.5" />{" "}
+        </span>
+      );
+    },
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2 w-36">
@@ -75,28 +89,16 @@ export const columns: ColumnDef<Shipment>[] = [
       );
     },
   },
-  {
-    accessorKey: "source",
-    header: "Source",
-    cell: ({ row }) => {
-      return (
-        <div className="w-36">
-          {row.original.rate ? (
-            <img
-              src={row.original.rate?.carrier_logo}
-              alt="Source Image"
-              className="size-6"
-            />
-          ) : (
-            <Minus className="size-6 text-primary" />
-          )}
-        </div>
-      );
-    },
-  },
+
   {
     accessorKey: "price",
-    header: "Price",
+    header: () => {
+      return (
+        <span className="flex items-center gap-2 text-black">
+          Price <ListFilter className="size-3.5" />{" "}
+        </span>
+      );
+    },
     cell: ({ row }) => {
       return (
         <span className="text-primary w-36 inline-block">
@@ -110,8 +112,36 @@ export const columns: ColumnDef<Shipment>[] = [
     },
   },
   {
+    accessorKey: "id",
+    header: () => {
+      return (
+        <span className="flex items-center gap-2 text-black">
+          Action <ListFilter className="size-3.5" />{" "}
+        </span>
+      );
+    },
+    cell: () => {
+      return (
+        <Select>
+          <SelectTrigger className="bg-[#5E636614]">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="completed">Completed</SelectItem>
+          </SelectContent>
+        </Select>
+      );
+    },
+  },
+  {
     accessorKey: "status",
-    header: "Status",
+    header: () => {
+      return (
+        <span className="flex items-center gap-2 text-black">
+          Status <ListFilter className="size-3.5" />{" "}
+        </span>
+      );
+    },
     cell: ({ row }) => {
       if (row.original.status === "in_transit") {
         return (

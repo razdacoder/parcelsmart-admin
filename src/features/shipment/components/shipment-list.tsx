@@ -1,41 +1,30 @@
-import Paginator from "@/components/paginator";
-import TableLoader from "@/components/table-loader";
 import { Button } from "@/components/ui/button";
-import { DatePickerWithRange } from "@/components/ui/date-range-picker";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import useShipments from "@/features/shipment/api/useShipments";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { columns } from "@/features/shipment/columns";
 import { DataTable } from "@/features/shipment/components/data-table";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { Download, Filter, Search } from "lucide-react";
 import { useState } from "react";
-import { DateRange } from "react-day-picker";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
 
 export default function ShipmentList() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
-    const from = searchParams.get("start_date");
-    const to = searchParams.get("end_date");
-    const fromDate = from ? new Date(from) : undefined;
-    const toDate = to ? new Date(to) : undefined;
 
-    if (fromDate) {
-      return {
-        from: fromDate,
-        to: toDate ? toDate : undefined,
-      };
-    }
-
-    return undefined;
-  });
   const search = searchParams.get("search");
 
   const [searchInput, setSearchInput] = useState(search || "");
   const [debouncedValue, setDebouncedValue] = useState(search || "");
 
-  const currentPage = parseInt(searchParams.get("page") || "1", 10);
+  // const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const currentFilter = searchParams.get("status") as
     | "draft"
     | "confirmed"
@@ -82,51 +71,55 @@ export default function ShipmentList() {
     setSearchParams(newSearchParams);
   };
 
-  const handleDateChange = (range: DateRange | undefined) => {
-    setDateRange(range);
+  // const handleDateChange = (range: DateRange | undefined) => {
+  //   setDateRange(range);
 
-    const newSearchParams = new URLSearchParams(searchParams.toString());
+  //   const newSearchParams = new URLSearchParams(searchParams.toString());
 
-    if (range?.from) {
-      newSearchParams.set("start_date", format(range.from, "yyyy-MM-dd"));
-    } else {
-      newSearchParams.delete("start_date");
-    }
+  //   if (range?.from) {
+  //     newSearchParams.set("start_date", format(range.from, "yyyy-MM-dd"));
+  //   } else {
+  //     newSearchParams.delete("start_date");
+  //   }
 
-    if (range?.to) {
-      newSearchParams.set("end_date", format(range.to, "yyyy-MM-dd"));
-    } else {
-      newSearchParams.delete("end_date");
-    }
+  //   if (range?.to) {
+  //     newSearchParams.set("end_date", format(range.to, "yyyy-MM-dd"));
+  //   } else {
+  //     newSearchParams.delete("end_date");
+  //   }
 
-    setSearchParams(newSearchParams);
-  };
-  const {
-    data: shipments,
-    isLoading: shipmentLoading,
-    isError: shipmentError,
-  } = useShipments({
-    page: currentPage,
-    limit: 15,
-    status: currentFilter,
-    start_date: dateRange?.from
-      ? format(dateRange.from, "yyyy-MM-dd")
-      : undefined,
-    end_date: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
-    search: debouncedValue,
-  });
+  //   setSearchParams(newSearchParams);
+  // };
+  // const {
+  //   data: shipments,
+  //   isLoading: shipmentLoading,
+  //   isError: shipmentError,
+  // } = useShipments({
+  //   page: currentPage,
+  //   limit: 15,
+  //   status: currentFilter,
+  //   start_date: dateRange?.from
+  //     ? format(dateRange.from, "yyyy-MM-dd")
+  //     : undefined,
+  //   end_date: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
+  //   search: debouncedValue,
+  // });
   return (
-    <div className="space-y-2">
-      <h3 className="text-lg font-bold text-text">All Shipments</h3>
+    <Card className="shadow-none border-none py-2">
+      <CardHeader>
+        <CardTitle className="text-2xl font-bold text-text">
+          All Shipments
+        </CardTitle>
+      </CardHeader>
 
-      <div className="bg-white w-full p-8 space-y-2">
+      <CardContent className="w-full space-y-6 rounded-xl">
         <div className="flex flex-col lg:flex-row md:justify-between gap-3">
           <div className="flex items-center gap-2 flex-wrap">
             <Button
               onClick={() => handleFilterClick(null)}
               size="sm"
               className={cn(
-                "px-8 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
+                "px-6 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
                 !currentFilter &&
                   "bg-[#DCFFEB] text-primary hover:bg-[#DCFFEB] hover:text-primary"
               )}
@@ -137,7 +130,7 @@ export default function ShipmentList() {
               onClick={() => handleFilterClick("confirmed")}
               size="sm"
               className={cn(
-                "px-8 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
+                "px-6 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
                 currentFilter === "confirmed" &&
                   "bg-[#DCFFEB] text-primary hover:bg-[#DCFFEB] hover:text-primary"
               )}
@@ -148,7 +141,7 @@ export default function ShipmentList() {
               onClick={() => handleFilterClick("draft")}
               size="sm"
               className={cn(
-                "px-8 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
+                "px-6 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
                 currentFilter === "draft" &&
                   "bg-[#DCFFEB] text-primary hover:bg-[#DCFFEB] hover:text-primary"
               )}
@@ -159,7 +152,7 @@ export default function ShipmentList() {
               onClick={() => handleFilterClick("in_transit")}
               size="sm"
               className={cn(
-                "px-8 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
+                "px-6 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
                 currentFilter === "in_transit" &&
                   "bg-[#DCFFEB] text-primary hover:bg-[#DCFFEB] hover:text-primary"
               )}
@@ -170,18 +163,18 @@ export default function ShipmentList() {
               onClick={() => handleFilterClick("cancelled")}
               size="sm"
               className={cn(
-                "px-8 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
+                "px-6 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
                 currentFilter === "cancelled" &&
                   "bg-[#DCFFEB] text-primary hover:bg-[#DCFFEB] hover:text-primary"
               )}
             >
-              Canceled
+              Cancelled
             </Button>
             <Button
               onClick={() => handleFilterClick("delivered")}
               size="sm"
               className={cn(
-                "px-8 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
+                "px-6 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
                 currentFilter === "delivered" &&
                   "bg-[#DCFFEB] text-primary hover:bg-[#DCFFEB] hover:text-primary"
               )}
@@ -189,42 +182,52 @@ export default function ShipmentList() {
               Delivered
             </Button>
           </div>
-          <div className="flex flex-col md:flex-row items-center gap-2">
-            <Input
-              value={searchInput || ""}
-              onChange={({ currentTarget }) => {
-                setSearchInput(currentTarget.value);
-              }}
-              placeholder="Search..."
-              className="py-2 h-11 w-full md:w-1/2 lg:w-56"
-            />
-            <DatePickerWithRange
-              value={dateRange}
-              onChange={handleDateChange}
-              disabled={shipmentLoading}
-              className="h-11 w-full md:w-1/2 lg:w-fit"
-            />
+          <div className="flex items-center gap-4 px-6 w-3/6">
+            <div className="relative flex-1">
+              <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 transform text-muted-foreground" />
+              <Input
+                onChange={(e) => setSearchInput(e.target.value)}
+                className="ps-10 h-9 w-full"
+                type="search"
+                placeholder="Search"
+              />
+            </div>
+            <Select defaultValue="week">
+              <SelectTrigger className="w-36">
+                <Filter className="size-4" />
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="week">This Week</SelectItem>
+                <SelectItem value="Month">This Month</SelectItem>
+                <SelectItem value="Year">This Year</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button variant="ghost" className="items-center gap-2">
+              <Download className="size-4 " />
+              Export
+            </Button>
           </div>
         </div>
-        {shipmentLoading && <TableLoader />}
-        {shipments && (
-          <>
-            <div>
-              <DataTable columns={columns} data={shipments.data.shipments} />
-            </div>
 
-            <Paginator pagination={shipments.data.pagination} />
-          </>
-        )}
+        <>
+          <div>
+            <DataTable columns={columns} data={[]} />
+          </div>
 
+          {/* <Paginator pagination={shipments.data.pagination} /> */}
+        </>
+
+        {/* 
         {shipmentError && (
           <div className="flex justify-center items-center py-24">
             <p className="text-sm font-medium text-destructive">
               Failed to load shipments
             </p>
           </div>
-        )}
-      </div>
-    </div>
+        )} */}
+      </CardContent>
+    </Card>
   );
 }

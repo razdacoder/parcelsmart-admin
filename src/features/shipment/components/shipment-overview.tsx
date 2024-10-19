@@ -58,7 +58,7 @@ const chartConfig = {
 
 export function ShipmentOverview() {
   return (
-    <Card className="">
+    <Card className=" shadow-none border-none">
       <CardHeader className="flex items-center flex-row justify-between px-12 py-8">
         <CardTitle className="text-2xl font-bold">Shipment Overview</CardTitle>
         <div className="flex items-center gap-4 px-6">
@@ -82,16 +82,7 @@ export function ShipmentOverview() {
       <CardContent className="max-h-96">
         <ResponsiveContainer width="100%" height={350}>
           <ChartContainer config={chartConfig}>
-            <AreaChart
-              accessibilityLayer
-              data={chartData}
-              margin={
-                {
-                  //  left: 12,
-                  //  right: 12,
-                }
-              }
-            >
+            <AreaChart accessibilityLayer data={chartData}>
               <CartesianGrid vertical={false} />
               <YAxis tickLine={false} axisLine={false} tickMargin={8} />
 
