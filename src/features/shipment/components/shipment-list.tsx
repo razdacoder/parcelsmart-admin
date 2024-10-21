@@ -32,7 +32,7 @@ export default function ShipmentList() {
     | "delivered"
     | "cancelled"
     | null;
-  const [] = useDebounce(
+  useDebounce(
     () => {
       setDebouncedValue(searchInput);
       if (searchInput) {
