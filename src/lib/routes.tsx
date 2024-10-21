@@ -9,6 +9,7 @@ import Reports from "@/pages/dashboard/Reports";
 import RolesAndPermissions from "@/pages/dashboard/RolesAndPermissions";
 import Shipments from "@/pages/dashboard/Shipments";
 import Transactions from "@/pages/dashboard/Transactions";
+import UserDetail from "@/pages/dashboard/UserDetail";
 import Users from "@/pages/dashboard/Users";
 
 import { createBrowserRouter } from "react-router-dom";
@@ -36,7 +37,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "users/",
-        element: <Users />,
+        children: [
+          {
+            index: true,
+            element: <Users />,
+          },
+          {
+            path: ":id/",
+            element: <UserDetail />,
+          },
+        ],
       },
       {
         path: "roles-permissions/",
