@@ -4,6 +4,7 @@ import SignIn from "@/pages/auth/SignIn";
 import DashboardLayout from "@/pages/dashboard/DashboardLayout";
 import Home from "@/pages/dashboard/Home";
 import KYC from "@/pages/dashboard/KYC";
+import MarkUps from "@/pages/dashboard/MarkUps";
 import Profile from "@/pages/dashboard/Profile";
 import Reports from "@/pages/dashboard/Reports";
 import RolesAndPermissions from "@/pages/dashboard/RolesAndPermissions";
@@ -30,6 +31,10 @@ export const router = createBrowserRouter([
       {
         path: "shipments/",
         element: <Shipments />,
+      },
+      {
+        path: "markups/",
+        element: <MarkUps />,
       },
       {
         path: "transactions/",

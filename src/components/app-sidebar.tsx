@@ -8,6 +8,7 @@ import {
   KeyRound,
   LayoutDashboard,
   LogOut,
+  Percent,
   TruckIcon,
   User,
   UsersIcon,
@@ -41,6 +42,11 @@ const data = {
       title: "Shipment",
       url: "/shipments",
       icon: TruckIcon,
+    },
+    {
+      title: "Markups",
+      url: "/markups",
+      icon: Percent,
     },
     {
       title: "Transactions",
