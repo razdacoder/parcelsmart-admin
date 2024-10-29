@@ -1,4 +1,3 @@
-import { formatNaira } from "@/lib/utils";
 
 export default function TransactionStatsCard() {
   return (
@@ -100,7 +99,7 @@ export default function TransactionStatsCard() {
 
         <div className="space-y-1">
           <h6 className="text-xs font-medium">Total Revenue</h6>
-          <h3 className="text-lg font-bold">{formatNaira(10000000)}</h3>
+          <h3 className="text-lg font-bold">24</h3>
         </div>
       </div>
       <div className="bg-white p-4 flex items-center gap-4 text-text rounded-xl">
