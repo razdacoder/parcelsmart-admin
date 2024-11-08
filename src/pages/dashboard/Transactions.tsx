@@ -1,5 +1,4 @@
 import AppNavBar from "@/components/app-navbar";
-import TransactionList from "@/features/transactions/components/transaction-list";
 import TransactionOverview from "@/features/transactions/components/transaction-overview";
 import TransactionStatsCard from "@/features/transactions/components/transactions-stats-card";
 
@@ -10,7 +9,7 @@ export default function Transactions() {
       <main className="px-4 md:px-8 space-y-6">
         <TransactionStatsCard />
         <TransactionOverview />
-        <TransactionList />
+        {/* <TransactionList /> */}
       </main>
     </div>
   );

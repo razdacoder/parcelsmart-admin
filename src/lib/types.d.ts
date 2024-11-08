@@ -105,7 +105,6 @@ type User = {
   last_name: string;
   email: string;
   phone_number: string;
-  username: string;
   account_type: "personal" | "platform";
   email_verified_at: Date;
   referral_source: null;
@@ -320,4 +319,31 @@ type Shipment = {
     deleted_at: Date | null;
   } | null;
   parcels: Parcel[];
+};
+
+type AdminTransaction = {
+  id: string;
+  user_id: string;
+  wallet_id: string | null;
+  amount: string;
+  amount_received: string;
+  type: "debit" | "credit";
+  status: string;
+  description: string;
+  reference: string;
+  tx_ref: string;
+  metadata: string;
+  channel: string;
+  platform: string;
+  fee: string;
+  currency: string;
+  channel_reference: string;
+  channel_response: string;
+  wallet_balance: string;
+  wallet_before_balance: string;
+  wallet_after_balance: string;
+  reversed: boolean;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date | null;
 };

@@ -1,3 +1,4 @@
+import Paginator from "@/components/paginator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,7 @@ import { Download, Filter, Search } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
+import useTransactions from "../api/use-transactions";
 import { columns } from "../columns";
 import { DataTable } from "./data-table";
 
@@ -29,7 +31,7 @@ export default function TransactionList() {
     | "in-flow"
     | "out-flow"
     | null;
-  const [] = useDebounce(
+  useDebounce(
     () => {
       setDebouncedValue(searchInput);
       if (searchInput) {
@@ -79,20 +81,7 @@ export default function TransactionList() {
 
   //   setSearchParams(newSearchParams);
   // };
-  // const {
-  //   data: shipments,
-  //   isLoading: shipmentLoading,
-  //   isError: shipmentError,
-  // } = useShipments({
-  //   page: currentPage,
-  //   limit: 15,
-  //   status: currentFilter,
-  //   start_date: dateRange?.from
-  //     ? format(dateRange.from, "yyyy-MM-dd")
-  //     : undefined,
-  //   end_date: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
-  //   search: debouncedValue,
-  // });
+  const { data: transactions, isLoading, error } = useTransactions();
   return (
     <Card className="shadow-none border-none">
       <CardHeader>
@@ -163,14 +152,16 @@ export default function TransactionList() {
             </Button>
           </div>
         </div>
+        {transactions && (
+          <>
+            <DataTable
+              columns={columns}
+              data={transactions.data.transactions}
+            />
 
-        <>
-          <div>
-            <DataTable columns={columns} data={[]} />
-          </div>
-
-          {/* <Paginator pagination={shipments.data.pagination} /> */}
-        </>
+            <Paginator pagination={transactions.data.pagination} />
+          </>
+        )}
       </CardContent>
     </Card>
   );

@@ -1,3 +1,4 @@
+import { Badge } from "@/components/ui/badge";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
@@ -8,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { ArrowUpRight, ListFilter } from "lucide-react";
+import { ListFilter } from "lucide-react";
 
 export const columns: ColumnDef<User>[] = [
   {
@@ -44,7 +45,7 @@ export const columns: ColumnDef<User>[] = [
     },
     cell: ({ row }) => {
       return (
-        <span>
+        <span className="w-56 inline-block truncate">
           {row.original.first_name} {row.original.last_name}
         </span>
       );
@@ -62,8 +63,7 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2 w-56">
-          <ArrowUpRight className="size-5 text-primary" />
-          <span>{format(row.original.created_at, "d MMM, hh.mm a")}</span>
+          <span>{format(row.original.created_at, "d MMM yyyy - hh.mm a")}</span>
         </div>
       );
     },
@@ -78,7 +78,9 @@ export const columns: ColumnDef<User>[] = [
       );
     },
     cell: ({ row }) => {
-      return <span className="truncate w-36">{row.original.id}</span>;
+      return (
+        <span className="truncate w-16 inline-block">{row.original.id}</span>
+      );
     },
   },
 
@@ -120,12 +122,15 @@ export const columns: ColumnDef<User>[] = [
     },
     cell: () => {
       return (
-        <Select>
-          <SelectTrigger className="bg-[#5E636614]">
+        <Select defaultValue="verified">
+          <SelectTrigger className="bg-[#5E636614] w-36">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="verified">Verified</SelectItem>
+            <SelectItem value="unverified">Unverified</SelectItem>
+            <SelectItem value="block">Block</SelectItem>
+            <SelectItem value="unblock">Unblock</SelectItem>
           </SelectContent>
         </Select>
       );
@@ -138,6 +143,13 @@ export const columns: ColumnDef<User>[] = [
         <span className="flex items-center gap-2 text-black">
           KYC <ListFilter className="size-3.5" />{" "}
         </span>
+      );
+    },
+    cell: () => {
+      return (
+        <Badge className="bg-[#E0FEE9B2] py-2 px-3 text-[#24D164] w-36 flex justify-center hover:bg-[#E0FEE9B2] hover:text-[#24D164]">
+          Completed
+        </Badge>
       );
     },
     // cell: ({ row }) => {

@@ -1,3 +1,5 @@
+import Paginator from "@/components/paginator";
+import TableLoader from "@/components/table-loader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,6 +14,7 @@ import { Download, Filter, Search } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
+import useUsers from "../api/use-users";
 import { columns } from "../columns";
 import { DataTable } from "./data-table";
 
@@ -20,7 +23,7 @@ export default function UserList() {
   const search = searchParams.get("search");
   const [searchInput, setSearchInput] = useState(search || "");
   const [debouncedValue, setDebouncedValue] = useState(search || "");
-  const [] = useDebounce(
+  useDebounce(
     () => {
       setDebouncedValue(searchInput);
       if (searchInput) {
@@ -36,6 +39,8 @@ export default function UserList() {
     1500,
     [searchInput]
   );
+
+  const { isLoading, data, error } = useUsers();
   return (
     <Card className="shadow-none border-none">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -69,7 +74,20 @@ export default function UserList() {
         </div>
       </CardHeader>
       <CardContent>
-        <DataTable columns={columns} data={[]} />
+        {isLoading && <TableLoader />}
+        {error && (
+          <div className="py-4 flex justify-center items-center">
+            <p className="text-destructive text-sm ">
+              {error.response?.data.message}
+            </p>
+          </div>
+        )}
+        {data && (
+          <>
+            <DataTable columns={columns} data={data.data.users} />
+            <Paginator pagination={data.data.pagination} />
+          </>
+        )}
       </CardContent>
     </Card>
   );
