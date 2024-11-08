@@ -1,5 +1,6 @@
 import AppNavBar from "@/components/app-navbar";
 import useMe from "@/features/auth/api/useMe";
+import useOverview from "@/features/overview/api/use-overview";
 import StatsMetrics from "@/features/overview/components/stats-metrics";
 import RecentShipment from "@/features/shipment/components/recent-shipment";
 import ShipmentMetrics from "@/features/shipment/components/shipment-metrics";
@@ -7,6 +8,7 @@ import { ShipmentOverview } from "@/features/shipment/components/shipment-overvi
 
 export default function Home() {
   const { data: user } = useMe();
+  const { data, isLoading, error } = useOverview();
   return (
     <div className="flex flex-col gap-4 w-full overflow-hidden">
       <AppNavBar title="Overview" />
@@ -14,8 +16,26 @@ export default function Home() {
         <h3 className="text-xl font-bold text-text">
           Hi, {user?.data.first_name}
         </h3>
-        <StatsMetrics />
-        <ShipmentMetrics />
+        <StatsMetrics
+          isLoading={isLoading}
+          data={{
+            total_transactions: data?.data.total_transactions,
+            total_revenue: data?.data.total_revenue,
+            total_staffs: data?.data.total_staffs,
+            total_users: data?.data.total_users,
+          }}
+          error={error?.response?.data}
+        />
+        <ShipmentMetrics
+          isLoading={isLoading}
+          data={{
+            total_shipments: data?.data.total_shipments,
+            delivered_shipment: data?.data.delivered_shipment,
+            canceled_shipment: data?.data.canceled_shipment,
+            shipment_in_transit: data?.data.shipment_in_transit,
+          }}
+          error={error?.response?.data}
+        />
         <ShipmentOverview />
         <RecentShipment />
       </main>

@@ -169,7 +169,23 @@ export const columns: ColumnDef<Shipment>[] = [
       if (row.original.status === "confirmed") {
         return (
           <Badge className="bg-[#EFF6FF] py-2 px-3 text-[#2563EB] w-36 flex justify-center hover:bg-[#EFF6FF] hover:text-[#2563EB]">
-            Completed
+            Confirmed
+          </Badge>
+        );
+      }
+
+      if (row.original.status === "delivered") {
+        return (
+          <Badge className="bg-[#E0FEE9B2] py-2 px-3 text-[#24D164] w-36 flex justify-center hover:bg-[#E0FEE9B2] hover:text-[#24D164]">
+            Delivered
+          </Badge>
+        );
+      }
+
+      if (row.original.status === "pending") {
+        return (
+          <Badge className="bg-yellow-500 py-2 px-3 w-36 flex justify-center hover:bg-yellow-600 hover:text-white">
+            Pending
           </Badge>
         );
       }

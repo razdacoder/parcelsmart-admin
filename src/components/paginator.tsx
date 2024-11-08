@@ -7,6 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { cn } from "@/lib/utils";
 import React from "react";
 import { useLocation } from "react-router-dom";
 
@@ -47,6 +48,10 @@ const Paginator: React.FC<PaginationProps> = ({ pagination }) => {
         {pageNumbers.map((pageNumber) => (
           <PaginationItem key={pageNumber}>
             <PaginationLink
+              className={cn(
+                "hover:text-primary",
+                pageNumber === current_page && "hover:text-white"
+              )}
               to={createPageUrl(pageNumber)}
               isActive={pageNumber === current_page}
             >

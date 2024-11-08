@@ -1,3 +1,5 @@
+import Paginator from "@/components/paginator";
+import TableLoader from "@/components/table-loader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -15,6 +17,7 @@ import { Download, Filter, Search } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
+import useShipments from "../api/useShipments";
 
 export default function ShipmentList() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,7 +27,7 @@ export default function ShipmentList() {
   const [searchInput, setSearchInput] = useState(search || "");
   const [debouncedValue, setDebouncedValue] = useState(search || "");
 
-  // const currentPage = parseInt(searchParams.get("page") || "1", 10);
+  const currentPage = parseInt(searchParams.get("page") || "1", 10);
   const currentFilter = searchParams.get("status") as
     | "draft"
     | "confirmed"
@@ -59,51 +62,24 @@ export default function ShipmentList() {
       | null
   ) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
-
-    // Update the 'filter' parameter or remove it if filter is null
     if (filter) {
       newSearchParams.set("status", filter);
     } else {
       newSearchParams.delete("status");
     }
-
-    // Update the URL with the new search parameters
     setSearchParams(newSearchParams);
   };
 
-  // const handleDateChange = (range: DateRange | undefined) => {
-  //   setDateRange(range);
-
-  //   const newSearchParams = new URLSearchParams(searchParams.toString());
-
-  //   if (range?.from) {
-  //     newSearchParams.set("start_date", format(range.from, "yyyy-MM-dd"));
-  //   } else {
-  //     newSearchParams.delete("start_date");
-  //   }
-
-  //   if (range?.to) {
-  //     newSearchParams.set("end_date", format(range.to, "yyyy-MM-dd"));
-  //   } else {
-  //     newSearchParams.delete("end_date");
-  //   }
-
-  //   setSearchParams(newSearchParams);
-  // };
-  // const {
-  //   data: shipments,
-  //   isLoading: shipmentLoading,
-  //   isError: shipmentError,
-  // } = useShipments({
-  //   page: currentPage,
-  //   limit: 15,
-  //   status: currentFilter,
-  //   start_date: dateRange?.from
-  //     ? format(dateRange.from, "yyyy-MM-dd")
-  //     : undefined,
-  //   end_date: dateRange?.to ? format(dateRange.to, "yyyy-MM-dd") : undefined,
-  //   search: debouncedValue,
-  // });
+  const {
+    data: shipments,
+    isLoading: shipmentLoading,
+    isError: shipmentError,
+  } = useShipments({
+    page: currentPage,
+    limit: 15,
+    status: currentFilter,
+    search: debouncedValue,
+  });
   return (
     <Card className="shadow-none border-none py-2">
       <CardHeader>
@@ -211,22 +187,22 @@ export default function ShipmentList() {
           </div>
         </div>
 
-        <>
-          <div>
-            <DataTable columns={columns} data={[]} />
-          </div>
+        {shipmentLoading && <TableLoader />}
 
-          {/* <Paginator pagination={shipments.data.pagination} /> */}
-        </>
+        {shipments && (
+          <>
+            <DataTable columns={columns} data={shipments.data.shipments} />
+            <Paginator pagination={shipments.data.pagination} />
+          </>
+        )}
 
-        {/* 
         {shipmentError && (
           <div className="flex justify-center items-center py-24">
             <p className="text-sm font-medium text-destructive">
               Failed to load shipments
             </p>
           </div>
-        )} */}
+        )}
       </CardContent>
     </Card>
   );

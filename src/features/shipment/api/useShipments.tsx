@@ -35,7 +35,7 @@ export default function useShipments({
   return useQuery<ResponseType, AxiosError<ErrorResponseType>>({
     queryKey: ["shipments", page, limit, status, start_date, end_date, search],
     queryFn: async () => {
-      const response = await client.get("/v1/shipments", {
+      const response = await client.get("/admin/shipments", {
         params: {
           page,
           limit,
