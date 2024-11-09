@@ -1,3 +1,4 @@
+import ExportButton from "@/components/export-button";
 import Paginator from "@/components/paginator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -10,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { Download, Filter, Search } from "lucide-react";
+import { Filter, Search } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
@@ -146,10 +147,7 @@ export default function TransactionList() {
                 <SelectItem value="Year">This Year</SelectItem>
               </SelectContent>
             </Select>
-            <Button variant="ghost" className="items-center gap-2">
-              <Download className="size-4 " />
-              Export
-            </Button>
+            <ExportButton />
           </div>
         </div>
         {transactions && (

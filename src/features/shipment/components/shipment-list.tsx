@@ -1,19 +1,14 @@
+import ExportButton from "@/components/export-button";
+import AllFilter from "@/components/filter";
 import Paginator from "@/components/paginator";
 import TableLoader from "@/components/table-loader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { columns } from "@/features/shipment/columns";
 import { DataTable } from "@/features/shipment/components/data-table";
 import { cn } from "@/lib/utils";
-import { Download, Filter, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
@@ -168,22 +163,8 @@ export default function ShipmentList() {
                 placeholder="Search"
               />
             </div>
-            <Select defaultValue="week">
-              <SelectTrigger className="w-36">
-                <Filter className="size-4" />
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="today">Today</SelectItem>
-                <SelectItem value="week">This Week</SelectItem>
-                <SelectItem value="Month">This Month</SelectItem>
-                <SelectItem value="Year">This Year</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="ghost" className="items-center gap-2">
-              <Download className="size-4 " />
-              Export
-            </Button>
+            <AllFilter />
+            <ExportButton />
           </div>
         </div>
 

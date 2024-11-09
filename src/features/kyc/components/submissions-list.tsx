@@ -1,6 +1,4 @@
-import ExportButton from "@/components/export-button";
-import Paginator from "@/components/paginator";
-import TableLoader from "@/components/table-loader";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
@@ -10,15 +8,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Filter, Search } from "lucide-react";
+import { Download, Filter, Search } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
-import useUsers from "../api/use-users";
+
 import { columns } from "../columns";
 import { DataTable } from "./data-table";
 
-export default function UserList() {
+export default function SubmissionList() {
   const [searchParams, setSearchParams] = useSearchParams();
   const search = searchParams.get("search");
   const [searchInput, setSearchInput] = useState(search || "");
@@ -40,11 +38,10 @@ export default function UserList() {
     [searchInput]
   );
 
-  const { isLoading, data, error } = useUsers();
   return (
     <Card className="shadow-none border-none">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="text-2xl font-bold">All Users</CardTitle>
+        <CardTitle className="text-2xl font-bold">All Submissions</CardTitle>
         <div className="flex items-center gap-4 px-6 w-3/6">
           <div className="relative flex-1">
             <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 transform text-muted-foreground" />
@@ -67,24 +64,27 @@ export default function UserList() {
               <SelectItem value="Year">This Year</SelectItem>
             </SelectContent>
           </Select>
-          <ExportButton />
+          <Button variant="ghost" className="items-center gap-2">
+            <Download className="size-4 " />
+            Export
+          </Button>
         </div>
       </CardHeader>
       <CardContent>
-        {isLoading && <TableLoader />}
+        {/* {isLoading && <TableLoader />}
         {error && (
           <div className="py-4 flex justify-center items-center">
             <p className="text-destructive text-sm ">
               {error.response?.data.message}
             </p>
           </div>
-        )}
-        {data && (
-          <>
-            <DataTable columns={columns} data={data.data.users} />
-            <Paginator pagination={data.data.pagination} />
-          </>
-        )}
+        )} */}
+        {/* {data && ( */}
+        <>
+          <DataTable columns={columns} data={[]} />
+          {/* <Paginator pagination={data.data.pagination} /> */}
+        </>
+        {/* )} */}
       </CardContent>
     </Card>
   );

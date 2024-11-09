@@ -1,4 +1,4 @@
-import { Circle, UploadIcon } from "lucide-react";
+import { Circle } from "lucide-react";
 import {
   Area,
   AreaChart,
@@ -8,7 +8,8 @@ import {
   YAxis,
 } from "recharts";
 
-import { Button } from "@/components/ui/button";
+import DateFilter from "@/components/date-filter";
+import ExportButton from "@/components/export-button";
 import {
   Card,
   CardContent,
@@ -22,13 +23,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { client } from "@/lib/client";
 import { useQuery } from "@tanstack/react-query";
@@ -100,21 +94,8 @@ export function ShipmentOverview() {
       <CardHeader className="flex items-center flex-row justify-between px-12 py-8">
         <CardTitle className="text-2xl font-bold">Shipment Overview</CardTitle>
         <div className="flex items-center gap-4 px-6">
-          <Button variant="ghost" className="items-center gap-2">
-            <UploadIcon className="size-4 " />
-            Export
-          </Button>
-          <Select defaultValue="week">
-            <SelectTrigger disabled={isLoading}>
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="today">Today</SelectItem>
-              <SelectItem value="week">This Week</SelectItem>
-              <SelectItem value="Month">This Month</SelectItem>
-              <SelectItem value="Year">This Year</SelectItem>
-            </SelectContent>
-          </Select>
+          <ExportButton />
+          <DateFilter />
         </div>
       </CardHeader>
       {isLoading && (
