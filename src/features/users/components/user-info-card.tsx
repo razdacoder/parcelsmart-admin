@@ -7,55 +7,74 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { getInitials } from "@/lib/utils";
+import { format } from "date-fns";
+import { useParams } from "react-router-dom";
+import useGetUser from "../api/use-get-user";
 
 export default function UserInfoCard() {
+  const { id } = useParams();
+  const { data: user, isLoading: userLoading } = useGetUser({ user_id: id });
   return (
     <Card className="shadow-none border-none">
       <CardContent className="py-6">
+        {userLoading && <Skeleton className="h-48 w-full" />}
         <div className="grid grid-cols-3 divide-x-[1px] divide-[#DBDADE]">
-          <div className="flex items-start gap-4">
-            <Avatar className="size-20">
-              <AvatarImage src="" />
-              <AvatarFallback className="bg-primary font-semibold text-white text-2xl">
-                RR
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col gap-0.5">
-              <h3 className="text-xl font-semibold text-text">Ramon Rasheed</h3>
-              <span className="text-sm font-medium text-gray-500">
-                ramonrash2@gmail.com
-              </span>
-              <Select defaultValue="verified">
-                <SelectTrigger className="bg-[#5E636614] border-none focus:ring-0 mt-6">
-                  <SelectValue className="text-gray-600" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="verified">Verified</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-          <div className="space-y-3 px-12">
-            <h6 className="text-sm text-[#4F4F4F] font-medium uppercase">
-              Personal Information
-            </h6>
-            <div className="flex justify-between items-center text-sm text-[#4F4F4F] capitalize">
-              <span>Contact Number</span>
-              <span className="font-semibold text-text">+2347098765432</span>
-            </div>
-            <div className="flex justify-between items-center text-sm text-[#4F4F4F] capitalize">
-              <span>Gender</span>
-              <span className="font-semibold text-text">Male</span>
-            </div>
-            <div className="flex justify-between items-center text-sm text-[#4F4F4F] capitalize">
-              <span>Date of Birth</span>
-              <span className="font-semibold text-text">1 Jan, 1985</span>
-            </div>
-            <div className="flex justify-between items-center text-sm text-[#4F4F4F] capitalize">
-              <span>Member Since</span>
-              <span className="font-semibold text-text">2 March, 2023</span>
-            </div>
-          </div>
+          {user && (
+            <>
+              <div className="flex items-start gap-4">
+                <Avatar className="size-20">
+                  <AvatarImage src="" />
+                  <AvatarFallback className="bg-primary font-semibold text-white text-2xl">
+                    {getInitials(user.data.first_name, user.data.last_name)}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col gap-0.5">
+                  <h3 className="text-xl font-semibold text-text">
+                    {user.data.first_name} {user.data.last_name}
+                  </h3>
+                  <span className="text-sm font-medium text-gray-500">
+                    {user.data.email}
+                  </span>
+                  <Select defaultValue="verified">
+                    <SelectTrigger className="bg-[#5E636614] border-none focus:ring-0 mt-6">
+                      <SelectValue className="text-gray-600" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="verified">Verified</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+              <div className="space-y-3 px-12">
+                <h6 className="text-sm text-[#4F4F4F] font-medium uppercase">
+                  Personal Information
+                </h6>
+                <div className="flex justify-between items-center text-sm text-[#4F4F4F] capitalize">
+                  <span>Contact Number</span>
+                  <span className="font-semibold text-text">
+                    {user.data.phone_number}
+                  </span>
+                </div>
+                {/* <div className="flex justify-between items-center text-sm text-[#4F4F4F] capitalize">
+                  <span>Gender</span>
+                  <span className="font-semibold text-text">{user.data.}</span>
+                </div> */}
+                {/* <div className="flex justify-between items-center text-sm text-[#4F4F4F] capitalize">
+                  <span>Date of Birth</span>
+                  <span className="font-semibold text-text">1 Jan, 1985</span>
+                </div> */}
+                <div className="flex justify-between items-center text-sm text-[#4F4F4F] capitalize">
+                  <span>Member Since</span>
+                  <span className="font-semibold text-text">
+                    {format(user.data.created_at, "d MMMM, yyyy")}
+                  </span>
+                </div>
+              </div>
+            </>
+          )}
+
           <div className="flex flex-col gap-3 px-12">
             <h6 className="text-sm text-[#4F4F4F] font-medium uppercase">
               Default Shipping Address

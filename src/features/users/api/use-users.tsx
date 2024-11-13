@@ -11,11 +11,24 @@ type ResponseType = {
   };
 };
 
-export default function useUsers() {
+export default function useUsers({
+  page,
+  search,
+}: {
+  page?: number;
+  search: string;
+}) {
   return useQuery<ResponseType, AxiosError<ErrorResponseType>>({
-    queryKey: ["all-users"],
+    queryKey: ["all-users", page, search],
     queryFn: async () => {
-      const response = await client.get("/admin/users");
+      const response = await client.get("/admin/users", {
+        params: {
+          page,
+          search: search === "" ? undefined : search,
+          sortBy: "created_at",
+          sortOrder: "desc",
+        },
+      });
       return response.data;
     },
   });

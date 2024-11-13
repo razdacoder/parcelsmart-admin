@@ -79,7 +79,7 @@ export const columns: ColumnDef<User>[] = [
     },
     cell: ({ row }) => {
       return (
-        <span className="truncate w-16 inline-block">{row.original.id}</span>
+        <span className="truncate w-48 inline-block">{row.original.id}</span>
       );
     },
   },

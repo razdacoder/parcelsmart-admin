@@ -14,7 +14,7 @@ import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
 import useShipments from "../api/useShipments";
 
-export default function ShipmentList() {
+export default function ShipmentList({ user_id }: { user_id?: string }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search");
@@ -74,6 +74,7 @@ export default function ShipmentList() {
     limit: 15,
     status: currentFilter,
     search: debouncedValue,
+    user_id,
   });
   return (
     <Card className="shadow-none border-none py-2">
@@ -157,7 +158,10 @@ export default function ShipmentList() {
             <div className="relative flex-1">
               <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 transform text-muted-foreground" />
               <Input
-                onChange={(e) => setSearchInput(e.target.value)}
+                value={searchInput || ""}
+                onChange={({ currentTarget }) => {
+                  setSearchInput(currentTarget.value);
+                }}
                 className="ps-10 h-9 w-full"
                 type="search"
                 placeholder="Search"

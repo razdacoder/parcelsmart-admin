@@ -3,15 +3,8 @@ import Paginator from "@/components/paginator";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { Filter, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useDebounce } from "react-use";
@@ -129,33 +122,22 @@ export default function TransactionList() {
             <div className="relative flex-1">
               <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 transform text-muted-foreground" />
               <Input
-                onChange={(e) => setSearchInput(e.target.value)}
+                value={searchInput || ""}
+                onChange={({ currentTarget }) => {
+                  setSearchInput(currentTarget.value);
+                }}
                 className="ps-10 h-9 w-full"
                 type="search"
                 placeholder="Search"
               />
             </div>
-            <Select defaultValue="week">
-              <SelectTrigger className="w-36">
-                <Filter className="size-4" />
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="today">Today</SelectItem>
-                <SelectItem value="week">This Week</SelectItem>
-                <SelectItem value="Month">This Month</SelectItem>
-                <SelectItem value="Year">This Year</SelectItem>
-              </SelectContent>
-            </Select>
+
             <ExportButton />
           </div>
         </div>
         {transactions && (
           <>
-            <DataTable
-              columns={columns}
-              data={transactions.data.transactions}
-            />
+            <DataTable columns={columns} data={[]} />
 
             <Paginator pagination={transactions.data.pagination} />
           </>

@@ -18,6 +18,7 @@ export default function useShipments({
   start_date,
   end_date,
   search,
+  user_id,
 }: {
   page?: number;
   limit?: number;
@@ -31,11 +32,22 @@ export default function useShipments({
   start_date?: string;
   end_date?: string;
   search: string;
+  user_id?: string;
 }) {
+  const url = `/admin/shipments${user_id ? `/user/${user_id}` : ""}`;
   return useQuery<ResponseType, AxiosError<ErrorResponseType>>({
-    queryKey: ["shipments", page, limit, status, start_date, end_date, search],
+    queryKey: [
+      "shipments",
+      page,
+      limit,
+      status,
+      start_date,
+      end_date,
+      search,
+      user_id,
+    ],
     queryFn: async () => {
-      const response = await client.get("/admin/shipments", {
+      const response = await client.get(url, {
         params: {
           page,
           limit,

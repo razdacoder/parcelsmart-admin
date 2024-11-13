@@ -70,11 +70,11 @@ export default function AllFilter() {
             <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col gap-1">
                 <Label className="text-xs">From</Label>
-                <Input placeholder="0.00" />
+                <Input placeholder="0.00" className="h-9" />
               </div>
               <div className="flex flex-col gap-1">
                 <Label className="text-xs">To</Label>
-                <Input placeholder="0.00" />
+                <Input placeholder="0.00" className="h-9" />
               </div>
             </div>
           </div>

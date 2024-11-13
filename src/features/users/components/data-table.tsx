@@ -14,6 +14,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -25,6 +26,7 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = useState({});
+  const navigate = useNavigate();
   const table = useReactTable({
     data,
     columns,
@@ -63,7 +65,7 @@ export function DataTable<TData, TValue>({
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
                 className="cursor-pointer"
-                onClick={() => {}}
+                onClick={() => navigate(`/users/${(row.original as User).id}`)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id} className="h-12 text-sm ">

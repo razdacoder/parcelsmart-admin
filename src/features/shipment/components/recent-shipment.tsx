@@ -1,15 +1,5 @@
 import TableLoader from "@/components/table-loader";
-import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Filter, Search, UploadIcon } from "lucide-react";
 import useShipments from "../api/useShipments";
 import { columns } from "../columns";
 import { DataTable } from "./data-table";
@@ -33,7 +23,7 @@ export default function RecentShipment() {
         <CardTitle className="text-2xl font-bold text-text">
           Recent Shipments
         </CardTitle>
-        <div className="flex items-center gap-4 px-6 w-1/2">
+        {/* <div className="flex items-center gap-4 px-6 w-1/2">
           <div className="relative flex-1">
             <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 transform text-muted-foreground" />
             <Input
@@ -58,7 +48,7 @@ export default function RecentShipment() {
             <UploadIcon className="size-4 " />
             Export
           </Button>
-        </div>
+        </div> */}
       </CardHeader>
       <div className="w-full p-8 space-y-2">
         <div>
