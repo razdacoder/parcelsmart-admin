@@ -1,14 +1,3 @@
-type Shipmnet = {
-  date: Date;
-  reciever: string;
-  destination: string;
-  shipmentId: string;
-  source: string;
-  sourceSvgUrl: string;
-  price: number;
-  status: "canceled" | "in-transit" | "completed" | "draft";
-};
-
 interface ErrorResponseType {
   status: boolean;
   message: string;
@@ -67,17 +56,6 @@ type Pagination = {
   total_pages: number;
   has_previous_page: boolean;
   has_next_page: boolean;
-};
-
-type RegsiterUserData = {
-  email: string;
-  first_name: string;
-  last_name: string;
-  password: string;
-  phone_number: string;
-  username: string;
-  confirm_password: string;
-  account_type: string;
 };
 
 type RegisterSuccessType = {
@@ -336,6 +314,7 @@ type AdminTransaction = {
   channel: string;
   platform: string;
   fee: string;
+  user: User;
   currency: string;
   channel_reference: string;
   channel_response: string;

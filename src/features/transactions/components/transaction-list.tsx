@@ -1,5 +1,6 @@
 import ExportButton from "@/components/export-button";
 import Paginator from "@/components/paginator";
+import TableLoader from "@/components/table-loader";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -12,7 +13,7 @@ import useTransactions from "../api/use-transactions";
 import { columns } from "../columns";
 import { DataTable } from "./data-table";
 
-export default function TransactionList() {
+export default function TransactionList({ user_id }: { user_id?: string }) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const search = searchParams.get("search");
@@ -21,10 +22,7 @@ export default function TransactionList() {
   const [debouncedValue, setDebouncedValue] = useState(search || "");
 
   // const currentPage = parseInt(searchParams.get("page") || "1", 10);
-  const currentFilter = searchParams.get("status") as
-    | "in-flow"
-    | "out-flow"
-    | null;
+  const currentFilter = searchParams.get("type") as "credit" | "debit" | null;
   useDebounce(
     () => {
       setDebouncedValue(searchInput);
@@ -42,14 +40,14 @@ export default function TransactionList() {
     [searchInput]
   );
 
-  const handleFilterClick = (filter: "in-flow" | "out-flow" | null) => {
+  const handleFilterClick = (filter: "credit" | "debit" | null) => {
     const newSearchParams = new URLSearchParams(searchParams.toString());
 
     // Update the 'filter' parameter or remove it if filter is null
     if (filter) {
-      newSearchParams.set("status", filter);
+      newSearchParams.set("type", filter);
     } else {
-      newSearchParams.delete("status");
+      newSearchParams.delete("type");
     }
 
     // Update the URL with the new search parameters
@@ -75,7 +73,15 @@ export default function TransactionList() {
 
   //   setSearchParams(newSearchParams);
   // };
-  const { data: transactions, isLoading, error } = useTransactions();
+  const {
+    data: transactions,
+    isLoading,
+    error,
+  } = useTransactions({
+    type: currentFilter,
+    search: debouncedValue,
+    user_id,
+  });
   return (
     <Card className="shadow-none border-none">
       <CardHeader>
@@ -96,22 +102,22 @@ export default function TransactionList() {
               All
             </Button>
             <Button
-              onClick={() => handleFilterClick("in-flow")}
+              onClick={() => handleFilterClick("credit")}
               size="sm"
               className={cn(
                 "px-6 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
-                currentFilter === "in-flow" &&
+                currentFilter === "credit" &&
                   "bg-[#DCFFEB] text-primary hover:bg-[#DCFFEB] hover:text-primary"
               )}
             >
               In Flow
             </Button>
             <Button
-              onClick={() => handleFilterClick("out-flow")}
+              onClick={() => handleFilterClick("debit")}
               size="sm"
               className={cn(
                 "px-6 h-9 bg-transparent text-text shadow-none hover:bg-transparent hover:text-primary  font-semibold",
-                currentFilter === "out-flow" &&
+                currentFilter === "debit" &&
                   "bg-[#DCFFEB] text-primary hover:bg-[#DCFFEB] hover:text-primary"
               )}
             >
@@ -135,12 +141,22 @@ export default function TransactionList() {
             <ExportButton />
           </div>
         </div>
+        {isLoading && <TableLoader />}
         {transactions && (
           <>
-            <DataTable columns={columns} data={[]} />
-
+            <DataTable
+              columns={columns}
+              data={transactions.data.transactions}
+            />
             <Paginator pagination={transactions.data.pagination} />
           </>
+        )}
+        {error && (
+          <div className="py-4 flex items-center justify-center">
+            <p className="text-sm font-medium text-destructive">
+              {error.response?.data.message}
+            </p>
+          </div>
         )}
       </CardContent>
     </Card>

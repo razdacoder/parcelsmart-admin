@@ -36,14 +36,17 @@ export const loginSchema = z.object({
 export type LoginValues = z.infer<typeof loginSchema>;
 
 export const updateProfileSchema = z.object({
-  firstName: z.string().trim().min(50, { message: "This field is required" }),
-  lastName: z.string().trim().min(50, { message: "This field is required" }),
-  phoneNumber: z.string().trim().min(15, { message: "This field is required" }),
+  first_name: z.string().trim().min(2, { message: "This field is required" }),
+  last_name: z.string().trim().min(2, { message: "This field is required" }),
+  phone_number: z
+    .string()
+    .trim()
+    .min(10, { message: "This field is required" }),
   email: z
     .string()
     .trim()
     .email({ message: "Invalid email address" })
-    .min(50, { message: "This field is required" }),
+    .min(5, { message: "This field is required" }),
 });
 
 export type UpdateProfileValues = z.infer<typeof updateProfileSchema>;

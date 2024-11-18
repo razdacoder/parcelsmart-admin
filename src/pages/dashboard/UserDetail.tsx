@@ -11,7 +11,7 @@ export default function UserDetail() {
       <AppNavBar title="User Detail" />
       <main className="px-4 md:px-8 space-y-6">
         <UserInfoCard />
-        <TransactionList />
+        <TransactionList user_id={id} />
         <ShipmentList user_id={id} />
       </main>
     </div>

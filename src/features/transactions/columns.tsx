@@ -9,11 +9,11 @@ import {
 import { copyText, formatNaira } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { ArrowUpRight, Copy, ListFilter, Minus } from "lucide-react";
+import { ArrowUpRight, Copy, ListFilter } from "lucide-react";
 
-export const columns: ColumnDef<Shipment>[] = [
+export const columns: ColumnDef<AdminTransaction>[] = [
   {
-    accessorKey: "origin_address",
+    accessorKey: "user",
     header: () => {
       return (
         <span className="flex items-center gap-2 text-black">
@@ -24,8 +24,7 @@ export const columns: ColumnDef<Shipment>[] = [
     cell: ({ row }) => {
       return (
         <span>
-          {row.original.origin_address.first_name}{" "}
-          {row.original.origin_address.last_name}
+          {row.original.user.first_name} {row.original.user.last_name}
         </span>
       );
     },
@@ -49,7 +48,7 @@ export const columns: ColumnDef<Shipment>[] = [
     },
   },
   {
-    accessorKey: "rate",
+    accessorKey: "type",
     header: () => {
       return (
         <span className="flex items-center gap-2 text-black">
@@ -57,8 +56,11 @@ export const columns: ColumnDef<Shipment>[] = [
         </span>
       );
     },
-    cell: () => {
-      return <span>In Flow</span>;
+    cell: ({ row }) => {
+      if (row.original.type === "credit") {
+        return <span>In Flow</span>;
+      }
+      return <span>Out Flow</span>;
     },
   },
 
@@ -74,13 +76,11 @@ export const columns: ColumnDef<Shipment>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex items-center gap-2 w-36">
-          <span className="truncate flex-1">
-            {row.original.tracking_number || row.original.id}
-          </span>
+          <span className="truncate flex-1">{row.original.id}</span>
           <button
             onClick={(e) => {
               e.stopPropagation();
-              copyText(row.original.tracking_number || row.original.id);
+              copyText(row.original.id);
             }}
           >
             <Copy className="size-4 text-primary" />
@@ -102,11 +102,7 @@ export const columns: ColumnDef<Shipment>[] = [
     cell: ({ row }) => {
       return (
         <span className="text-primary w-36 inline-block">
-          {row.original.rate ? (
-            formatNaira(row.original.rate.amount)
-          ) : (
-            <Minus className="size-6 text-primary" />
-          )}
+          {formatNaira(parseFloat(row.original.amount))}
         </span>
       );
     },
@@ -143,33 +139,25 @@ export const columns: ColumnDef<Shipment>[] = [
       );
     },
     cell: ({ row }) => {
-      if (row.original.status === "in_transit") {
+      if (row.original.status === "success") {
         return (
-          <Badge className="bg-[#CB6F1B26] py-2 px-3 text-[#CB6F1B] w-36 flex justify-center hover:bg-[#CB6F1B26] hover:text-[#CB6F1B]">
-            In Transit
+          <Badge className="bg-primary py-2 px-3 text-white w-36 flex justify-center hover:bg-primary hover:text-white">
+            Successful
           </Badge>
         );
       }
-      if (row.original.status === "cancelled") {
+      if (row.original.status === "failed") {
         return (
-          <Badge className="bg-[#FDF2F8] py-2 px-3 text-[#ED4F9D] w-36 flex justify-center hover:bg-[#FDF2F8] hover:text-[#ED4F9D]">
-            Cancelled
-          </Badge>
-        );
-      }
-
-      if (row.original.status === "draft") {
-        return (
-          <Badge className="bg-[#D6D8D9] py-2 px-3 text-[#4F4F4F] w-36 flex justify-center hover:bg-[#D6D8D9] hover:text-[#4F4F4F]">
-            Draft
+          <Badge className="bg-destructive py-2 px-3 text-white w-36 flex justify-center hover:bg-destructive hover:text-white">
+            Failed
           </Badge>
         );
       }
 
-      if (row.original.status === "confirmed") {
+      if (row.original.status === "pending") {
         return (
-          <Badge className="bg-[#EFF6FF] py-2 px-3 text-[#2563EB] w-36 flex justify-center hover:bg-[#EFF6FF] hover:text-[#2563EB]">
-            Completed
+          <Badge className="bg-yellow-600 py-2 px-3 text-white w-36 flex justify-center hover:bg-yellow-600 hover:text-white">
+            Pending
           </Badge>
         );
       }

@@ -54,7 +54,7 @@ export function TeamPermissionsTab() {
           <TabsList className="flex justify-between items-center">
             <div className="flex items-center gap-6">
               <TabsTrigger onClick={() => setActiveTab("roles")} value="roles">
-                Satff Roles
+                Staff Roles
               </TabsTrigger>
               <TabsTrigger
                 onClick={() => setActiveTab("permissions")}
