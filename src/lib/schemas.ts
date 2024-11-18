@@ -38,10 +38,6 @@ export type LoginValues = z.infer<typeof loginSchema>;
 export const updateProfileSchema = z.object({
   first_name: z.string().trim().min(2, { message: "This field is required" }),
   last_name: z.string().trim().min(2, { message: "This field is required" }),
-  phone_number: z
-    .string()
-    .trim()
-    .min(10, { message: "This field is required" }),
   email: z
     .string()
     .trim()

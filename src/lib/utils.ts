@@ -24,9 +24,10 @@ export const getInitials = (
   first_name?: string,
   last_name?: string
 ): string => {
-  return (
-    `${first_name?.charAt(0).toUpperCase()}${last_name
-      ?.charAt(0)
-      .toUpperCase()}` || ""
-  );
+  if (!first_name || !last_name) {
+    return "";
+  }
+  return `${first_name.charAt(0).toUpperCase()}${last_name
+    .charAt(0)
+    .toUpperCase()}`;
 };
