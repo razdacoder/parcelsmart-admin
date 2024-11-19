@@ -326,3 +326,22 @@ type AdminTransaction = {
   updated_at: Date;
   deleted_at: Date | null;
 };
+
+type Role = {
+  id: number;
+  name: string;
+  guard_name: "string";
+  created_at: Date;
+  updated_at: Date;
+};
+
+type Staff = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  created_at: Date;
+  updated_at: Date;
+  deleted_at: Date | null;
+  roles: Role[];
+};

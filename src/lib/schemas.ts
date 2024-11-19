@@ -138,14 +138,15 @@ export type ParcelListValues = z.infer<typeof parcelListSchema>;
 
 export type ParcelValues = z.infer<typeof parcelSchema>;
 
-export const qouteSchema = z.object({
-  from_country: z.string({ message: "This field is required" }).trim(),
-  from_state: z.string({ message: "This field is required" }).trim(),
-  from_city: z.string({ message: "This field is required" }).trim(),
-  to_country: z.string({ message: "This field is required" }).trim(),
-  to_state: z.string({ message: "This field is required" }).trim(),
-  to_city: z.string({ message: "This field is required" }).trim(),
-  estimated_weight: z.coerce.number({ message: "This field is required" }),
+export const createStaffSchema = z.object({
+  first_name: z.string().trim().min(2, { message: "This field is required" }),
+  last_name: z.string().trim().min(2, { message: "This field is required" }),
+  email: z.string().trim().email({ message: "Invalid email address" }),
+  password: z
+    .string()
+    .trim()
+    .min(8, { message: "Password should be at least 8 characters" }),
+  role_id: z.coerce.number({ message: "This field is required" }),
 });
 
-export type QouteValues = z.infer<typeof qouteSchema>;
+export type CreateStaffValues = z.infer<typeof createStaffSchema>;
