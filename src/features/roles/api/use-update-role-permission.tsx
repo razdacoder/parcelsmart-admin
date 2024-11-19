@@ -1,6 +1,7 @@
 import { client } from "@/lib/client";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "sonner";
 
 type ResponseType = {
   status: boolean;
@@ -14,6 +15,7 @@ type RequestType = {
 };
 
 export default function useUpdateRolePermission() {
+  const queryClient = useQueryClient();
   return useMutation<ResponseType, AxiosError<ErrorResponseType>, RequestType>({
     mutationFn: async (data) => {
       const response = await client.post(
@@ -21,6 +23,14 @@ export default function useUpdateRolePermission() {
         data
       );
       return response.data;
+    },
+    onSuccess: (data) => {
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["permissions"] });
+    },
+    onError: (error) => {
+      toast.error(error.response?.data.message);
+      console.error(error);
     },
   });
 }
